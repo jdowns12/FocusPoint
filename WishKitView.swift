@@ -1,3 +1,9 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Integrates and displays the WishKit feedback UI using SwiftUI.
+*/
+
 import SwiftUI
 import WishKit
 
@@ -20,3 +26,4 @@ struct WishKitView: View {
 
 // Notes:
 // 1. Make sure you've integrated WishKitSwiftUI via Swift Package Manager in Xcode: File > Add Packages > https://github.com/wishkit/wishkit-ios
+

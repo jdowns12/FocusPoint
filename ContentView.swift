@@ -1,3 +1,8 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Hosts the main tabbed and navigation interface for the app, managing state, record creation, and iCloud error handling.
+*/
 import SwiftUI
 import CloudKit
 import WishKit

@@ -1,56 +1,60 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: SwiftUI representable for UICloudSharingController, handling CloudKit sharing and delegate events.
+*/
+
 import SwiftUI
 import CloudKit
 
-struct _UICloudSharingController: UIViewControllerRepresentable {
-    var share: CKShare
+struct CloudSharingView: UIViewControllerRepresentable {
     var container: CKContainer
+    var share: CKShare
+    var rootRecord: CKRecord
+    @Binding var isPresented: Bool
     
-    var itemTitle: String?
-    var onSaveShareFail: ((Error) -> Void)
-    var onSaveShareSuccess: (() -> Void)
-    var onShareStop: (() -> Void)
-
-    typealias UIViewControllerType = UICloudSharingController
-    
-    func makeUIViewController(context: Context) -> UIViewControllerType {
+    func makeUIViewController(context: Context) -> UICloudSharingController {
         let sharingController = UICloudSharingController(share: share, container: container)
         sharingController.delegate = context.coordinator
         return sharingController
     }
     
-    func updateUIViewController(_ uiViewController: UIViewControllerType, context: Context) {}
+    func updateUIViewController(_ uiViewController: UICloudSharingController, context: Context) {
+        // No update needed
+    }
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(self)
+        Coordinator(parent: self)
     }
     
     class Coordinator: NSObject, UICloudSharingControllerDelegate {
-        var parent: _UICloudSharingController
-        init(_ parent: _UICloudSharingController) {
+        var parent: CloudSharingView
+        
+        init(parent: CloudSharingView) {
             self.parent = parent
         }
-                
-        // Called when saving a share fails.
-        func cloudSharingController(_ csc: UICloudSharingController, failedToSaveShareWithError error: any Error) {
-            print("\(#function): \(error)")
-            self.parent.onSaveShareFail(error)
+        
+        func cloudSharingController(_ csc: UICloudSharingController, failedToSaveShareWithError error: Error) {
+            print("Failed to save share: \(error.localizedDescription)")
+            parent.isPresented = false
         }
         
-        // Called when CloudKit successfully saves a share.
         func cloudSharingControllerDidSaveShare(_ csc: UICloudSharingController) {
-            print("\(#function)")
-            self.parent.onSaveShareSuccess()
+            print("Successfully saved share")
+            parent.isPresented = false
         }
         
-        // Called when sharing stops. This can be owner stopping or participant removing themselves.
         func cloudSharingControllerDidStopSharing(_ csc: UICloudSharingController) {
-            print(#function)
-            self.parent.onShareStop()
+            print("Stopped sharing")
+            parent.isPresented = false
         }
         
-        // Provides the title for the invitation screen.
         func itemTitle(for csc: UICloudSharingController) -> String? {
-            return self.parent.itemTitle
+            return parent.rootRecord["title"] as? String ?? "Shared Item"
+        }
+        
+        func cloudSharingController(_ csc: UICloudSharingController, previewForSharingContext sharingContext: UICloudSharingController.SharingContext) -> UIViewController? {
+            return nil
         }
     }
 }

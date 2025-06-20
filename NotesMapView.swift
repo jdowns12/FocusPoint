@@ -1,3 +1,9 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Displays map annotations for user and shared notes with geographic locations, showing thumbnail images for each note's location pin and managing user interactions with the map.
+*/
+
 import SwiftUI
 import MapKit
 import CloudKit

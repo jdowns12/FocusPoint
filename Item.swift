@@ -1,3 +1,9 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Defines the Item model for storing timestamped records using SwiftData in the Spot app.
+*/
+
 //
 //  Item.swift
 //  Spot
@@ -16,3 +22,4 @@ final class Item {
         self.timestamp = timestamp
     }
 }
+

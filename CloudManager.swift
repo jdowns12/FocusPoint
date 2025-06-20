@@ -1,11 +1,8 @@
-//
-//  ShareManager.swift
-//  iCloudDemo
-//
-//  Created by Itsuki on 2025/06/01.
-//
-
-// Depends on CKRecord+Extensions.swift for CKRecord.title, .content, .isOwner
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Manages iCloud/CloudKit records, sharing, user authentication, and state for notes and collaboration features in the app.
+*/
 
 import SwiftUI
 import CloudKit

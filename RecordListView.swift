@@ -1,3 +1,9 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Displays and manages lists of user and shared notes, including navigation and thumbnail support, using SwiftUI.
+*/
+
 import SwiftUI
 import CloudKit
 import UIKit

@@ -1,3 +1,9 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Implements UI components for selecting and saving map locations, managing iCloud sharing, and provides placeholder classes for future SharedWithYou collaboration integration.
+*/
+
 import CloudKit
 import SwiftUI
 import SharedWithYou

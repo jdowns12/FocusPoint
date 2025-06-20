@@ -1,3 +1,9 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Implements the detail view for displaying, editing, and sharing note records, including images, titles, and collaboration features.
+*/
+
 import SwiftUI
 import CloudKit
 import PhotosUI

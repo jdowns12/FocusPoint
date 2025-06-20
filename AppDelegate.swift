@@ -1,3 +1,8 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Handles app lifecycle, CloudKit remote notifications, and shared data initialization for the app.
+*/
 
 import SwiftUI
 import CloudKit
@@ -95,3 +100,4 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 //    }
 
 }
+

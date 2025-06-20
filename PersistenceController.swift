@@ -1,3 +1,8 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Provides a shared Core Data stack for persistent and in-memory storage using NSPersistentContainer.
+*/
 import CoreData
 
 struct PersistenceController {
@@ -17,3 +22,4 @@ struct PersistenceController {
         container.viewContext.automaticallyMergesChangesFromParent = true
     }
 }
+

@@ -1,50 +1,69 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Handles CloudKit share acceptance and foreground refreshes for the app's scene lifecycle.
+*/
 
+import UIKit
 import SwiftUI
 import CloudKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-    let manager = CloudManager.shared
-    
-    // For a scene-based iOS app in a running or suspended state, CloudKit calls the windowScene(_:userDidAcceptCloudKitShareWith:) method on your window scene delegate.
-    func windowScene(_ windowScene: UIWindowScene, userDidAcceptCloudKitShareWith cloudKitShareMetadata: CKShare.Metadata) {
-        print("scene userDidAcceptCloudKitShareWith: \(cloudKitShareMetadata)")
-        Task {
-            do {
-                try await manager.shareAccepted(cloudKitShareMetadata)
-            } catch(let error) {
-                print("error accepting share: \(error)")
-                manager.error = error
-            }
-        }
-    }
-    
-    
-    // For a scene-based iOS app that’s not running, the system launches your app in response to the tap or click, and calls the scene(_:willConnectTo:options:) method on your scene delegate. The connectionOptions parameter contains the metadata. Use its cloudKitShareMetadata property to access it.
+
+    var window: UIWindow?
+    var cloudKitManager = CloudKitManager()
+    var notificationCenter = NotificationCenter.default
+
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        if let shareMetadata = connectionOptions.cloudKitShareMetadata {
-            print("scene willConnectTo: \(shareMetadata)")
-            Task {
-                do {
-                    try await manager.shareAccepted(shareMetadata)
-                } catch(let error) {
-                    print("error accepting share: \(error)")
-                    manager.error = error
+        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
+        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
+        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+
+        // Create the SwiftUI view that provides the window contents.
+        let contentView = ContentView()
+            .environmentObject(cloudKitManager)
+
+        // Use a UIHostingController as window root view controller.
+        if let windowScene = scene as? UIWindowScene {
+            let window = UIWindow(windowScene: windowScene)
+            window.rootViewController = UIHostingController(rootView: contentView)
+            self.window = window
+            window.makeKeyAndVisible()
+        }
+
+        if let cloudKitShareMetadata = connectionOptions.cloudKitShareMetadata {
+            cloudKitManager.accept(cloudKitShareMetadata: cloudKitShareMetadata) { (error) in
+                if let error = error {
+                    print("Error accepting share: \(error.localizedDescription)")
                 }
             }
         }
     }
-    
-    
+
     func sceneWillEnterForeground(_ scene: UIScene) {
-        print("\(#function)")
-        Task {
-            do {
-                try await manager.refreshAllRecords()
-            } catch(let error) {
-                print("error initializeAllRecords: \(error)")
-                manager.error = error
-            }
-        }
+        notificationCenter.post(name: Notification.Name("refreshView"), object: nil)
     }
 
+    func sceneDidDisconnect(_ scene: UIScene) {
+        // Called as the scene is being released by the system.
+        // This occurs shortly after the scene enters the background, or when its session is discarded.
+        // Release any resources associated with this scene that can be re-created the next time the scene connects.
+        // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
+    }
+
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        // Called when the scene has moved from an inactive state to an active state.
+        // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+    }
+
+    func sceneWillResignActive(_ scene: UIScene) {
+        // Called when the scene will move from an active state to an inactive state.
+        // This may occur due to temporary interruptions (ex. an incoming phone call).
+    }
+
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        // Called as the scene transitions from the foreground to the background.
+        // Use this method to save data, release shared resources, and store enough scene-specific state information
+        // to restore the scene back to its current state.
+    }
 }

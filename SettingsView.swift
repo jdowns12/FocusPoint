@@ -1,3 +1,8 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Displays the app’s settings, feature request info, and links to community resources in a scrollable UI.
+*/
 import SwiftUI
 
 struct SettingsView: View {

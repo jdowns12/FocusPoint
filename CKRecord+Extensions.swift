@@ -1,3 +1,9 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Adds computed properties and helpers to CKRecord for title, content, ownership, and last modified metadata display.
+*/
+
 // Project-wide CKRecord extensions for CloudManager compatibility
 
 import SwiftUI

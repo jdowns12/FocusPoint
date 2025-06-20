@@ -1,3 +1,8 @@
+/*
+ Author: Jadon Downs
+ Created on: 6-10-25
+ Description: Provides an observable, async-friendly wrapper for location authorization and user location updates using CoreLocation.
+*/
 import Foundation
 import CoreLocation
 import Combine
